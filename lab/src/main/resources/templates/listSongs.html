@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <title>Список на песни</title>
+</head>
+<body>
+<div class="container mt-5">
+  <div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+  </div>
+
+  <div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <h2>Список на песни</h2>
+
+  <a href="/songs/add-form" class="btn btn-primary mb-3">Add Song</a>
+
+  <form th:action="@{/artist}" method="post">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Song id</th>
+        <th scope="col">Genre</th>
+        <th scope="col">Release year</th>
+        <th scope="col">Album</th>
+        <th scope="col">Peformers</th>
+        <th scope="col">Choice</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="song : ${songs}">
+        <td th:text="${song.title}"></td>
+        <td th:text="${song.trackId}"></td>
+        <td th:text="${song.genre}"></td>
+        <td th:text="${song.releaseYear}"></td>
+        <td th:text="${song.album != null ? song.album.name : 'Нема албум'}"></td>
+        <td>
+          <ul>
+            <li th:each="performer : ${song.performers}" th:text="${performer.name}"></li>
+          </ul>
+        </td>
+        <td>
+
+          <input type="radio" name="songRadio" th:value="${song.trackId}" />
+        </td>
+        <td>
+          <a th:href="@{/songs/edit/{trackId}(trackId=${song.trackId})}" class="btn btn-warning btn-sm">Edit</a>
+
+          <form action="/songs/delete/{trackId}"  method="post" style="display:inline;">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit">Delete</button>
+          </form>
+
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button type="submit" >Contiue to add Artist</button>
+
+  </form>
+</div>
+</body>
+</html>

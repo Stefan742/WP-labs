@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Додај / Уреди Песна</title>
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Порака за грешка -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <h2 th:text="${song == null ? 'Додај Нова Песна' : 'Уреди Песна'}"></h2>
+
+    <form th:action="@{/songs/add-form}" method="post">
+        <div class="form-group">
+            <label for="trackId">ID на песна</label>
+            <input type="text" class="form-control" id="trackId" name="trackId" th:value="${song != null ? song.trackId : ''}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Наслов на песна</label>
+            <input type="text" class="form-control" id="title" name="title" th:value="${song != null ? song.title : ''}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="genre">Жанр</label>
+            <input type="text" class="form-control" id="genre" name="genre" th:value="${song != null ? song.genre : ''}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="releaseYear">Година на издавање</label>
+            <input type="number" class="form-control" id="releaseYear" name="releaseYear" th:value="${song != null ? song.releaseYear : ''}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="album">Албум</label>
+            <select class="form-control" id="album" name="albumId" required>
+                <option th:each="album : ${albums}"
+                        th:value="${album.id}"
+                        th:text="${album.name}"
+                        th:selected="${song != null && song.album != null && song.album.id == album.id}"></option>
+            </select>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <span th:text="${song == null ? 'Додај' : 'Ажурирај'}"></span> Песна
+        </button>
+        <a href="/songs" class="btn btn-secondary">Откажи</a>
+    </form>
+
+</div>
+
+
+</body>
+</html>
